@@ -178,20 +178,22 @@ export default class LinkInlineTool implements InlineTool {
         this.toolbar.close();
   
         return;
-      } else {
-        const href = prompt('Enter the URL') || '';
-        document.execCommand(this.commandLink, false, href);
-  
-        // Added code to open the link in a new tab/window
-        const a = this.selection.findParentTag('A');
-        a.setAttribute('target', '_blank');
-        a.setAttribute('rel', 'noopener noreferrer');
-  
-        this.selection.save();
       }
     }
   
-    this.toggleActions();
+    const anchorTag = this.selection.findParentTag('A');
+  
+    if (anchorTag) {
+      const hrefAttr = anchorTag.getAttribute('href');
+  
+      if (hrefAttr !== 'null' && /^https?:\/\//i.test(hrefAttr)) {
+        window.open(hrefAttr, '_blank');
+      } else {
+        this.toggleActions();
+      }
+    } else {
+      this.toggleActions();
+    }
   }
   
 
