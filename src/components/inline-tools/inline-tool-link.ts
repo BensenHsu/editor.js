@@ -114,17 +114,22 @@ export default class LinkInlineTool implements InlineTool {
     this.i18n = api.i18n;
     this.selection = new SelectionUtils();
     document.addEventListener('click', this.handleLinkClick.bind(this));
-    document.removeEventListener('click', this.handleLinkClick.bind(this));
   }
   
   handleLinkClick(event: MouseEvent) {
     const target = event.target as HTMLElement;
-  
+    
     if (target.tagName === 'A') {
       event.preventDefault();
-      window.open(target.getAttribute('href'), '_blank');
+      const targetAttr = target.getAttribute('target');
+      if (targetAttr === '_blank') {
+        window.open(target.getAttribute('href'), '_blank');
+      } else {
+        window.location.href = target.getAttribute('href');
+      }
     }
   }
+  
 
   /**
    * Create button for Inline Toolbar
