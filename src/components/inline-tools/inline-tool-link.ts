@@ -36,11 +36,9 @@ export default class LinkInlineTool implements InlineTool {
         href: true,
         target: '_blank',
         rel: 'nofollow',
-        'data-custom': true, // new attribute
       },
     } as SanitizerConfig;
   }
-  
 
   /**
    * Native Document's commands for link/unlink
@@ -142,25 +140,9 @@ export default class LinkInlineTool implements InlineTool {
         this.enterPressed(event);
       }
     });
-  
-    // new input element for the attribute value
-    const customInput = document.createElement('input') as HTMLInputElement;
-    customInput.placeholder = 'Add custom attribute value';
-    customInput.classList.add(this.CSS.input);
-    customInput.addEventListener('keydown', (event: KeyboardEvent) => {
-      if (event.keyCode === this.ENTER_KEY) {
-        this.enterPressed(event);
-      }
-    });
-  
-    // append the new input element to the existing input element
-    const wrapper = document.createElement('div');
-    wrapper.appendChild(this.nodes.input);
-    wrapper.appendChild(customInput);
-  
-    return wrapper;
+
+    return this.nodes.input;
   }
-  
 
   /**
    * Handle clicks on the Inline Toolbar icon
@@ -207,31 +189,36 @@ export default class LinkInlineTool implements InlineTool {
    */
   public checkState(): boolean {
     const anchorTag = this.selection.findParentTag('A');
-
+  
     if (anchorTag) {
       this.nodes.button.innerHTML = IconUnlink;
       this.nodes.button.classList.add(this.CSS.buttonUnlink);
       this.nodes.button.classList.add(this.CSS.buttonActive);
       this.openActions();
   
-      // Fill input value with link href
+      /**
+       * Fill input value with link href
+       */
       const hrefAttr = anchorTag.getAttribute('href');
+  
       this.nodes.input.value = hrefAttr !== 'null' ? hrefAttr : '';
   
-      // set the value of the new input element for the attribute value
-      const customAttr = anchorTag.getAttribute('data-custom');
-      const customInput = this.nodes.input.nextElementSibling as HTMLInputElement;
-      customInput.value = customAttr !== 'null' ? customAttr : '';
-
+      // Add event listener to link
+      anchorTag.addEventListener('click', (event) => {
+        event.preventDefault();
+        window.open(hrefAttr, '_blank');
+      });
+  
       this.selection.save();
     } else {
       this.nodes.button.innerHTML = IconLink;
       this.nodes.button.classList.remove(this.CSS.buttonUnlink);
       this.nodes.button.classList.remove(this.CSS.buttonActive);
     }
-
+  
     return !!anchorTag;
   }
+  
 
   /**
    * Function called with Inline Toolbar closing
