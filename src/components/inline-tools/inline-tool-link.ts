@@ -113,6 +113,7 @@ export default class LinkInlineTool implements InlineTool {
     this.notifier = api.notifier;
     this.i18n = api.i18n;
     this.selection = new SelectionUtils();
+    document.addEventListener('click', this.handleLinkClick.bind(this));
   }
   
   handleLinkClick(event: MouseEvent) {
@@ -155,8 +156,6 @@ export default class LinkInlineTool implements InlineTool {
         this.enterPressed(event);
       }
     });
-
-    document.addEventListener('click', this.handleLinkClick.bind(this));
 
     return this.nodes.input;
   }
