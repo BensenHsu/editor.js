@@ -117,15 +117,14 @@ export default class LinkInlineTool implements InlineTool {
   
   handleLinkClick(event: MouseEvent) {
     const target = event.target as HTMLElement;
-  
+    
     if (target.tagName === 'A') {
       event.preventDefault();
-      window.open(target.getAttribute('href'), '_blank');
-    } else if (target === this.nodes.button) {
-      const href = this.nodes.input.value.trim();
-      if (href) {
-        event.preventDefault();
-        window.open(href, '_blank');
+      const targetAttr = target.getAttribute('target');
+      if (targetAttr === '_blank') {
+        window.open(target.getAttribute('href'), '_blank');
+      } else {
+        window.location.href = target.getAttribute('href');
       }
     }
   }
@@ -140,8 +139,6 @@ export default class LinkInlineTool implements InlineTool {
     this.nodes.button.classList.add(this.CSS.button, this.CSS.buttonModifier);
     this.nodes.button.innerHTML = IconLink;
 
-    // Add an event listener to the button to handle clicks
-    this.nodes.button.addEventListener('click', this.handleLinkClick.bind(this));
 
     return this.nodes.button;
   }
@@ -158,6 +155,9 @@ export default class LinkInlineTool implements InlineTool {
         this.enterPressed(event);
       }
     });
+
+    // Add an event listener to the button to handle clicks
+    this.nodes.button.addEventListener('click', this.handleLinkClick.bind(this));
 
     return this.nodes.input;
   }
