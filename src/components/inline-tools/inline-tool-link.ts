@@ -166,7 +166,7 @@ export default class LinkInlineTool implements InlineTool {
         this.selection.removeFakeBackground();
       }
       const parentAnchor = this.selection.findParentTag('A');
-  
+
       /**
        * Unlink icon pressed
        */
@@ -176,51 +176,49 @@ export default class LinkInlineTool implements InlineTool {
         this.closeActions();
         this.checkState();
         this.toolbar.close();
-  
+
         return;
       }
     }
-  
+
     this.toggleActions();
-  
-    const parentAnchor = this.selection.findParentTag('A');
-    if (parentAnchor) {
-      parentAnchor.addEventListener('click', (event) => {
-        event.preventDefault();
-        window.open(parentAnchor.getAttribute('href'));
-      });
-    }
   }
-  
 
   /**
    * Check selection and set activated state to button if there are <a> tag
    */
   public checkState(): boolean {
     const anchorTag = this.selection.findParentTag('A');
-
+  
     if (anchorTag) {
       this.nodes.button.innerHTML = IconUnlink;
       this.nodes.button.classList.add(this.CSS.buttonUnlink);
       this.nodes.button.classList.add(this.CSS.buttonActive);
       this.openActions();
-
+  
       /**
        * Fill input value with link href
        */
       const hrefAttr = anchorTag.getAttribute('href');
-
+  
       this.nodes.input.value = hrefAttr !== 'null' ? hrefAttr : '';
-
+  
       this.selection.save();
+  
+      // Add event listener to the 'a' tag
+      anchorTag.addEventListener('click', (event) => {
+        event.preventDefault();
+        window.open(hrefAttr);
+      });
     } else {
       this.nodes.button.innerHTML = IconLink;
       this.nodes.button.classList.remove(this.CSS.buttonUnlink);
       this.nodes.button.classList.remove(this.CSS.buttonActive);
     }
-
+  
     return !!anchorTag;
   }
+  
 
   /**
    * Function called with Inline Toolbar closing
