@@ -137,8 +137,8 @@ export default class LinkInlineTool implements InlineTool {
     this.nodes.button = document.createElement('button') as HTMLButtonElement;
     this.nodes.button.type = 'button';
     this.nodes.button.classList.add(this.CSS.button, this.CSS.buttonModifier);
-    this.nodes.button.innerHTML = IconLink;
 
+    this.nodes.button.innerHTML = IconLink;
 
     return this.nodes.button;
   }
@@ -156,8 +156,7 @@ export default class LinkInlineTool implements InlineTool {
       }
     });
 
-    // Add an event listener to the button to handle clicks
-    this.nodes.button.addEventListener('click', this.handleLinkClick.bind(this));
+    document.addEventListener('click', this.handleLinkClick.bind(this));
 
     return this.nodes.input;
   }
