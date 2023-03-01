@@ -461,7 +461,7 @@ export default class InlineToolbar extends Module<InlineToolbarNodes> {
 
     if (_.isMobileScreen() === false ) {
       this.tooltip.onHover(this.nodes.conversionToggler, I18n.ui(I18nInternalNS.ui.inlineToolbar.converter, 'Convert to'), {
-        placement: 'top',
+        placement: 'bottom',
         hidingDelay: 100,
       });
     }
@@ -590,7 +590,7 @@ export default class InlineToolbar extends Module<InlineToolbarNodes> {
 
     if (_.isMobileScreen() === false ) {
       this.tooltip.onHover(button, tooltipContent, {
-        placement: 'top',
+        placement: 'bottom',
         hidingDelay: 100,
       });
     }
