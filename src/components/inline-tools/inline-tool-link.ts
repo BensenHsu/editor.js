@@ -181,18 +181,14 @@ export default class LinkInlineTool implements InlineTool {
       }
     }
   
-    const anchorTag = this.selection.findParentTag('A');
+    this.toggleActions();
   
-    if (anchorTag) {
-      const hrefAttr = anchorTag.getAttribute('href');
-  
-      if (hrefAttr !== 'null' && /^https?:\/\//i.test(hrefAttr)) {
-        window.open(hrefAttr, '_blank');
-      } else {
-        this.toggleActions();
-      }
-    } else {
-      this.toggleActions();
+    const parentAnchor = this.selection.findParentTag('A');
+    if (parentAnchor) {
+      parentAnchor.addEventListener('click', (event) => {
+        event.preventDefault();
+        window.open(parentAnchor.getAttribute('href'));
+      });
     }
   }
   
