@@ -114,6 +114,7 @@ export default class LinkInlineTool implements InlineTool {
     this.i18n = api.i18n;
     this.selection = new SelectionUtils();
     document.addEventListener('click', this.handleLinkClick.bind(this));
+    document.removeEventListener('click', this.handleLinkClick.bind(this));
   }
   
   handleLinkClick(event: MouseEvent) {
