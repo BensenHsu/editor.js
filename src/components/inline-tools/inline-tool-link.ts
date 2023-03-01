@@ -396,24 +396,34 @@ export default class LinkInlineTool implements InlineTool {
     return link;
   }
 
+/**
+* Inserts <a> tag with "href" and "class"
+*
+* @param {string} link - "href" value
+*/
+private insertLink(link: string): void {
   /**
-   * Inserts <a> tag with "href"
-   *
-   * @param {string} link - "href" value
-   */
-  private insertLink(link: string): void {
-    /**
-     * Edit all link, not selected part
-     */
-    const anchorTag = this.selection.findParentTag('A');
+  * Edit all link, not selected part
+  */
+  const anchorTag = this.selection.findParentTag('A');
 
-    if (anchorTag) {
-      anchorTag.classList.add('ce-link');
-      this.selection.expandToTag(anchorTag);
-    }
-
-    document.execCommand(this.commandLink, false, link);
+  if (anchorTag) {
+    this.selection.expandToTag(anchorTag);
   }
+
+  // Create a new a tag element with the href attribute
+  const newLink = document.createElement('a');
+  newLink.href = link;
+
+  // Add the "ce-link" class to the new a tag element
+  newLink.classList.add('ce-link');
+
+  // Insert the new a tag element into the content
+  document.execCommand(this.commandLink, false, newLink.outerHTML);
+}
+
+
+
 
   /**
    * Removes <a> tag
