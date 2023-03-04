@@ -412,6 +412,7 @@ export default class LinkInlineTool implements InlineTool {
     const range = window.getSelection()?.getRangeAt(0);
     const linkA = document.createElement('a');
     linkA.href = link;
+    linkA.classList.add('ce-link');
     linkA.appendChild(range?.extractContents());
     range?.insertNode(linkA);
 
