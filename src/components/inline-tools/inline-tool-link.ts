@@ -33,6 +33,7 @@ export default class LinkInlineTool implements InlineTool {
   public static get sanitize(): SanitizerConfig {
     return {
       a: {
+        class: true,
         href: true,
         target: '_blank',
         rel: 'nofollow',
