@@ -118,7 +118,9 @@ export default class UI extends Module<UINodes> {
    * @type {() => void}
    */
   private resizeDebouncer: () => void = _.debounce(() => {
-    this.windowResize();
+    if (typeof window !== 'undefined') {
+      this.windowResize();
+    }
   // eslint-disable-next-line @typescript-eslint/no-magic-numbers
   }, 200);
 
@@ -259,7 +261,9 @@ export default class UI extends Module<UINodes> {
    * Check for mobile mode and cache a result
    */
   private checkIsMobile(): void {
-    this.isMobile = window.innerWidth < mobileScreenBreakpoint;
+    if (typeof window !== 'undefined') {
+      this.isMobile = window.innerWidth < mobileScreenBreakpoint;
+    }
   }
 
   /**
@@ -334,43 +338,45 @@ export default class UI extends Module<UINodes> {
    * Bind events on the Editor.js interface
    */
   private enableModuleBindings(): void {
-    this.readOnlyMutableListeners.on(this.nodes.redactor, 'click', (event: MouseEvent) => {
-      this.redactorClicked(event);
-    }, false);
+    if (typeof window !== 'undefined') {
+      this.readOnlyMutableListeners.on(this.nodes.redactor, 'click', (event: MouseEvent) => {
+        this.redactorClicked(event);
+      }, false);
 
-    this.readOnlyMutableListeners.on(this.nodes.redactor, 'mousedown', (event: MouseEvent | TouchEvent) => {
-      this.documentTouched(event);
-    }, true);
+      this.readOnlyMutableListeners.on(this.nodes.redactor, 'mousedown', (event: MouseEvent | TouchEvent) => {
+        this.documentTouched(event);
+      }, true);
 
-    this.readOnlyMutableListeners.on(this.nodes.redactor, 'touchstart', (event: MouseEvent | TouchEvent) => {
-      this.documentTouched(event);
-    }, true);
+      this.readOnlyMutableListeners.on(this.nodes.redactor, 'touchstart', (event: MouseEvent | TouchEvent) => {
+        this.documentTouched(event);
+      }, true);
 
-    this.readOnlyMutableListeners.on(document, 'keydown', (event: KeyboardEvent) => {
-      this.documentKeydown(event);
-    }, true);
+      this.readOnlyMutableListeners.on(document, 'keydown', (event: KeyboardEvent) => {
+        this.documentKeydown(event);
+      }, true);
 
-    this.readOnlyMutableListeners.on(document, 'mousedown', (event: MouseEvent) => {
-      this.documentClicked(event);
-    }, true);
+      this.readOnlyMutableListeners.on(document, 'mousedown', (event: MouseEvent) => {
+        this.documentClicked(event);
+      }, true);
 
-    /**
-     * Handle selection change to manipulate Inline Toolbar appearance
-     */
-    this.readOnlyMutableListeners.on(document, 'selectionchange', () => {
-      this.selectionChanged();
-    }, true);
+      /**
+       * Handle selection change to manipulate Inline Toolbar appearance
+       */
+      this.readOnlyMutableListeners.on(document, 'selectionchange', () => {
+        this.selectionChanged();
+      }, true);
 
-    this.readOnlyMutableListeners.on(window, 'resize', () => {
-      this.resizeDebouncer();
-    }, {
-      passive: true,
-    });
+      this.readOnlyMutableListeners.on(window, 'resize', () => {
+        this.resizeDebouncer();
+      }, {
+        passive: true,
+      });
 
-    /**
-     * Start watching 'block-hovered' events that is used by Toolbar for moving
-     */
-    this.watchBlockHoveredEvents();
+      /**
+       * Start watching 'block-hovered' events that is used by Toolbar for moving
+       */
+      this.watchBlockHoveredEvents();
+    }
   }
 
   /**

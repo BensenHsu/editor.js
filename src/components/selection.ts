@@ -81,9 +81,11 @@ export default class SelectionUtils {
    * @returns {Node|null}
    */
   public static get anchorNode(): Node | null {
-    const selection = window.getSelection();
-
-    return selection ? selection.anchorNode : null;
+    if (typeof window !== 'undefined') {
+      const selection = window.getSelection();
+      return selection ? selection.anchorNode : null;
+    }
+    return null;
   }
 
   /**
@@ -92,23 +94,26 @@ export default class SelectionUtils {
    * @returns {Element|null}
    */
   public static get anchorElement(): Element | null {
-    const selection = window.getSelection();
+    if (typeof window !== 'undefined') {
+      const selection = window.getSelection();
 
-    if (!selection) {
-      return null;
+      if (!selection) {
+        return null;
+      }
+
+      const anchorNode = selection.anchorNode;
+
+      if (!anchorNode) {
+        return null;
+      }
+
+      if (!$.isElement(anchorNode)) {
+        return anchorNode.parentElement;
+      } else {
+        return anchorNode;
+      }
     }
-
-    const anchorNode = selection.anchorNode;
-
-    if (!anchorNode) {
-      return null;
-    }
-
-    if (!$.isElement(anchorNode)) {
-      return anchorNode.parentElement;
-    } else {
-      return anchorNode;
-    }
+    return null;
   }
 
   /**
@@ -118,9 +123,11 @@ export default class SelectionUtils {
    * @returns {number|null}
    */
   public static get anchorOffset(): number | null {
-    const selection = window.getSelection();
-
-    return selection ? selection.anchorOffset : null;
+    if (typeof window !== 'undefined') {
+      const selection = window.getSelection();
+      return selection ? selection.anchorOffset : null;
+    }
+    return null;
   }
 
   /**
@@ -129,9 +136,11 @@ export default class SelectionUtils {
    * @returns {boolean|null}
    */
   public static get isCollapsed(): boolean | null {
-    const selection = window.getSelection();
-
-    return selection ? selection.isCollapsed : null;
+    if (typeof window !== 'undefined') {
+      const selection = window.getSelection();
+      return selection ? selection.isCollapsed : null;
+    }
+    return null;
   }
 
   /**
@@ -235,6 +244,7 @@ export default class SelectionUtils {
    * @returns {DOMRect | ClientRect}
    */
   public static get rect(): DOMRect | ClientRect {
+    if (typeof window !== 'undefined') {
     let sel: Selection | MSSelection = (document as Document).selection,
         range: TextRange | Range;
 
@@ -301,6 +311,7 @@ export default class SelectionUtils {
 
     return rect;
   }
+  }
 
   /**
    * Returns selected text as String
@@ -308,7 +319,10 @@ export default class SelectionUtils {
    * @returns {string}
    */
   public static get text(): string {
-    return window.getSelection ? window.getSelection().toString() : '';
+    if (typeof window !== 'undefined') {
+      return window.getSelection ? window.getSelection().toString() : '';
+    }
+    return null;
   }
 
   /**
@@ -318,7 +332,10 @@ export default class SelectionUtils {
    * @returns {Selection}
    */
   public static get(): Selection {
-    return window.getSelection();
+    if (typeof window !== 'undefined') {
+      return window.getSelection();
+    }
+    return null;
   }
 
   /**
@@ -328,6 +345,7 @@ export default class SelectionUtils {
    * @param offset - offset of cursor
    */
   public static setCursor(element: HTMLElement, offset = 0): DOMRect {
+    if (typeof window !== 'undefined') {
     const range = document.createRange();
     const selection = window.getSelection();
 
@@ -350,6 +368,8 @@ export default class SelectionUtils {
     selection.addRange(range);
 
     return range.getBoundingClientRect();
+  }
+  return null;
   }
 
   /**
@@ -414,6 +434,7 @@ export default class SelectionUtils {
    * Restore saved SelectionUtils's range
    */
   public restore(): void {
+    if (typeof window !== 'undefined') {
     if (!this.savedSelectionRange) {
       return;
     }
@@ -422,6 +443,8 @@ export default class SelectionUtils {
 
     sel.removeAllRanges();
     sel.addRange(this.savedSelectionRange);
+  }
+  return null;
   }
 
   /**
@@ -435,6 +458,7 @@ export default class SelectionUtils {
    * Collapse current selection
    */
   public collapseToEnd(): void {
+    if (typeof window !== 'undefined') {
     const sel = window.getSelection();
     const range = document.createRange();
 
@@ -442,6 +466,8 @@ export default class SelectionUtils {
     range.collapse(false);
     sel.removeAllRanges();
     sel.addRange(range);
+    }
+    return null;
   }
 
   /**
@@ -453,6 +479,7 @@ export default class SelectionUtils {
    * @returns {HTMLElement|null}
    */
   public findParentTag(tagName: string, className?: string, searchDepth = 10): HTMLElement | null {
+    if (typeof window !== 'undefined') {
     const selection = window.getSelection();
     let parentTag = null;
 
@@ -519,6 +546,8 @@ export default class SelectionUtils {
      */
     return parentTag;
   }
+  return null;
+  }
 
   /**
    * Expands selection range to the passed parent node
@@ -526,6 +555,7 @@ export default class SelectionUtils {
    * @param {HTMLElement} element - element which contents should be selected
    */
   public expandToTag(element: HTMLElement): void {
+    if (typeof window !== 'undefined') {
     const selection = window.getSelection();
 
     selection.removeAllRanges();
@@ -534,4 +564,6 @@ export default class SelectionUtils {
     range.selectNodeContents(element);
     selection.addRange(range);
   }
+  return null;
+}
 }
