@@ -18,24 +18,26 @@ import Chainable = Cypress.Chainable;
  * @returns EditorJS - created instance
  */
 Cypress.Commands.add('createEditor', (editorConfig: EditorConfig = {}): Chainable<EditorJS> => {
-  return cy.window()
-    .then((window) => {
-      return new Promise((resolve: (instance: EditorJS) => void) => {
-        const editorContainer = window.document.createElement('div');
+  if (typeof window !== 'undefined') {
+    return cy.window()
+      .then((window) => {
+        return new Promise((resolve: (instance: EditorJS) => void) => {
+          const editorContainer = window.document.createElement('div');
 
-        editorContainer.setAttribute('id', 'editorjs');
-        editorContainer.dataset.cy = 'editorjs';
-        editorContainer.style.border = '1px dotted #388AE5';
+          editorContainer.setAttribute('id', 'editorjs');
+          editorContainer.dataset.cy = 'editorjs';
+          editorContainer.style.border = '1px dotted #388AE5';
 
-        window.document.body.appendChild(editorContainer);
+          window.document.body.appendChild(editorContainer);
 
-        const editorInstance: EditorJS = new window.EditorJS(editorConfig);
+          const editorInstance: EditorJS = new window.EditorJS(editorConfig);
 
-        editorInstance.isReady.then(() => {
-          resolve(editorInstance);
+          editorInstance.isReady.then(() => {
+            resolve(editorInstance);
+          });
         });
       });
-    });
+    }
 });
 
 /**

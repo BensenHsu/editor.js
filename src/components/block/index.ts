@@ -638,13 +638,19 @@ export default class Block extends EventsDispatcher<BlockEvents> {
     /**
      * Measuring execution time
      */
-    const measuringStart = window.performance.now();
+    let measuringStart;
     let measuringEnd;
+
+    if (typeof window !== 'undefined' && window.performance) {
+      measuringStart = window.performance.now();
+    }
 
     return Promise.resolve(extractedBlock)
       .then((finishedExtraction) => {
         /** measure promise execution */
-        measuringEnd = window.performance.now();
+        if (typeof window !== 'undefined' && window.performance) {
+          measuringEnd = window.performance.now();
+        }
 
         return {
           id: this.id,
