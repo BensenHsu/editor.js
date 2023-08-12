@@ -1,6 +1,6 @@
 {
   "name": "@bensenhsu/editorjs",
-  "version": "2.27.5-rc.17",
+  "version": "2.27.5-rc.19",
   "description": "Editor.js — Native JS, based on API and Open Source",
   "main": "dist/editor.js",
   "types": "./types/index.d.ts",
