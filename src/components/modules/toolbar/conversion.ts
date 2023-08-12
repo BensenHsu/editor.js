@@ -130,26 +130,24 @@ export default class ConversionToolbar extends Module<ConversionToolbarNodes> {
    * Shows Conversion Toolbar
    */
   public open(): void {
-    if (typeof window !== 'undefined') {
-      this.filterTools();
+    this.filterTools();
 
-      this.opened = true;
-      this.nodes.wrapper.classList.add(ConversionToolbar.CSS.conversionToolbarShowed);
+    this.opened = true;
+    this.nodes.wrapper.classList.add(ConversionToolbar.CSS.conversionToolbarShowed);
 
-      /**
-       * We use RAF to prevent bubbling Enter keydown on first dropdown item
-       * Conversion flipper will be activated after dropdown will open
-       */
-      window.requestAnimationFrame(() => {
-        this.flipper.activate(this.tools.map(tool => tool.button).filter((button) => {
-          return !button.classList.contains(ConversionToolbar.CSS.conversionToolHidden);
-        }));
-        this.flipper.focusFirst();
-        if (_.isFunction(this.togglingCallback)) {
-          this.togglingCallback(true);
-        }
-      });
-    }
+    /**
+     * We use RAF to prevent bubbling Enter keydown on first dropdown item
+     * Conversion flipper will be activated after dropdown will open
+     */
+    window.requestAnimationFrame(() => {
+      this.flipper.activate(this.tools.map(tool => tool.button).filter((button) => {
+        return !button.classList.contains(ConversionToolbar.CSS.conversionToolHidden);
+      }));
+      this.flipper.focusFirst();
+      if (_.isFunction(this.togglingCallback)) {
+        this.togglingCallback(true);
+      }
+    });
   }
 
   /**

@@ -304,18 +304,16 @@ export default class Caret extends Module {
    * @param {number} offset - offset
    */
   public set(element: HTMLElement, offset = 0): void {
-    if (typeof window !== 'undefined') {
-      const { top, bottom } = Selection.setCursor(element, offset);
+    const { top, bottom } = Selection.setCursor(element, offset);
 
-      /** If new cursor position is not visible, scroll to it */
-      const { innerHeight } = window;
+    /** If new cursor position is not visible, scroll to it */
+    const { innerHeight } = window;
 
-      if (top < 0) {
-        window.scrollBy(0, top);
-      }
-      if (bottom > innerHeight) {
-        window.scrollBy(0, bottom - innerHeight);
-      }
+    if (top < 0) {
+      window.scrollBy(0, top);
+    }
+    if (bottom > innerHeight) {
+      window.scrollBy(0, bottom - innerHeight);
     }
   }
 

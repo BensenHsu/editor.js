@@ -57,34 +57,32 @@ export default class MoveDownTune implements BlockTune {
    * Handle clicks on 'move down' button
    */
   public handleClick(): void {
-    if (typeof window !== 'undefined') {
-      const currentBlockIndex = this.api.blocks.getCurrentBlockIndex();
-      const nextBlock = this.api.blocks.getBlockByIndex(currentBlockIndex + 1);
+    const currentBlockIndex = this.api.blocks.getCurrentBlockIndex();
+    const nextBlock = this.api.blocks.getBlockByIndex(currentBlockIndex + 1);
 
-      // If Block is last do nothing
-      if (!nextBlock) {
-        throw new Error('Unable to move Block down since it is already the last');
-      }
-
-      const nextBlockElement = nextBlock.holder;
-      const nextBlockCoords = nextBlockElement.getBoundingClientRect();
-
-      let scrollOffset = Math.abs(window.innerHeight - nextBlockElement.offsetHeight);
-
-      /**
-       * Next block ends on screen.
-       * Increment scroll by next block's height to save element onscreen-position
-       */
-      if (nextBlockCoords.top < window.innerHeight) {
-        scrollOffset = window.scrollY + nextBlockElement.offsetHeight;
-      }
-
-      window.scrollTo(0, scrollOffset);
-
-      /** Change blocks positions */
-      this.api.blocks.move(currentBlockIndex + 1);
-
-      this.api.toolbar.toggleBlockSettings(true);
+    // If Block is last do nothing
+    if (!nextBlock) {
+      throw new Error('Unable to move Block down since it is already the last');
     }
+
+    const nextBlockElement = nextBlock.holder;
+    const nextBlockCoords = nextBlockElement.getBoundingClientRect();
+
+    let scrollOffset = Math.abs(window.innerHeight - nextBlockElement.offsetHeight);
+
+    /**
+     * Next block ends on screen.
+     * Increment scroll by next block's height to save element onscreen-position
+     */
+    if (nextBlockCoords.top < window.innerHeight) {
+      scrollOffset = window.scrollY + nextBlockElement.offsetHeight;
+    }
+
+    window.scrollTo(0, scrollOffset);
+
+    /** Change blocks positions */
+    this.api.blocks.move(currentBlockIndex + 1);
+
+    this.api.toolbar.toggleBlockSettings(true);
   }
 }

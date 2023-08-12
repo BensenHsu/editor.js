@@ -116,41 +116,39 @@ export default class RectangleSelection extends Module {
    * @param {number} pageY - Y coord of mouse
    */
   public startSelection(pageX, pageY): void {
-    if (typeof window !== 'undefined') {
-      const elemWhereSelectionStart = document.elementFromPoint(pageX - window.pageXOffset, pageY - window.pageYOffset);
+    const elemWhereSelectionStart = document.elementFromPoint(pageX - window.pageXOffset, pageY - window.pageYOffset);
 
-      /**
-       * Don't clear selected block by clicks on the Block settings
-       * because we need to keep highlighting working block
-       */
-      const startsInsideToolbar = elemWhereSelectionStart.closest(`.${this.Editor.Toolbar.CSS.toolbar}`);
+    /**
+     * Don't clear selected block by clicks on the Block settings
+     * because we need to keep highlighting working block
+     */
+    const startsInsideToolbar = elemWhereSelectionStart.closest(`.${this.Editor.Toolbar.CSS.toolbar}`);
 
-      if (!startsInsideToolbar) {
-        this.Editor.BlockSelection.allBlocksSelected = false;
-        this.clearSelection();
-        this.stackOfSelected = [];
-      }
-
-      const selectorsToAvoid = [
-        `.${Block.CSS.content}`,
-        `.${this.Editor.Toolbar.CSS.toolbar}`,
-        `.${this.Editor.InlineToolbar.CSS.inlineToolbar}`,
-      ];
-
-      const startsInsideEditor = elemWhereSelectionStart.closest('.' + this.Editor.UI.CSS.editorWrapper);
-      const startsInSelectorToAvoid = selectorsToAvoid.some((selector) => !!elemWhereSelectionStart.closest(selector));
-
-      /**
-       * If selection starts outside of the editor or inside the blocks or on Editor UI elements, do not handle it
-       */
-      if (!startsInsideEditor || startsInSelectorToAvoid) {
-        return;
-      }
-
-      this.mousedown = true;
-      this.startX = pageX;
-      this.startY = pageY;
+    if (!startsInsideToolbar) {
+      this.Editor.BlockSelection.allBlocksSelected = false;
+      this.clearSelection();
+      this.stackOfSelected = [];
     }
+
+    const selectorsToAvoid = [
+      `.${Block.CSS.content}`,
+      `.${this.Editor.Toolbar.CSS.toolbar}`,
+      `.${this.Editor.InlineToolbar.CSS.inlineToolbar}`,
+    ];
+
+    const startsInsideEditor = elemWhereSelectionStart.closest('.' + this.Editor.UI.CSS.editorWrapper);
+    const startsInSelectorToAvoid = selectorsToAvoid.some((selector) => !!elemWhereSelectionStart.closest(selector));
+
+    /**
+     * If selection starts outside of the editor or inside the blocks or on Editor UI elements, do not handle it
+     */
+    if (!startsInsideEditor || startsInSelectorToAvoid) {
+      return;
+    }
+
+    this.mousedown = true;
+    this.startX = pageX;
+    this.startY = pageY;
   }
 
   /**
@@ -181,35 +179,33 @@ export default class RectangleSelection extends Module {
    * Sets Module necessary event handlers
    */
   private enableModuleBindings(): void {
-    if (typeof window !== 'undefined') {
-      const { container } = this.genHTML();
+    const { container } = this.genHTML();
 
-      this.listeners.on(container, 'mousedown', (mouseEvent: MouseEvent) => {
-        this.processMouseDown(mouseEvent);
-      }, false);
+    this.listeners.on(container, 'mousedown', (mouseEvent: MouseEvent) => {
+      this.processMouseDown(mouseEvent);
+    }, false);
 
-      this.listeners.on(document.body, 'mousemove', _.throttle((mouseEvent: MouseEvent) => {
-        this.processMouseMove(mouseEvent);
-      // eslint-disable-next-line @typescript-eslint/no-magic-numbers
-      }, 10), {
-        passive: true,
-      });
+    this.listeners.on(document.body, 'mousemove', _.throttle((mouseEvent: MouseEvent) => {
+      this.processMouseMove(mouseEvent);
+    // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+    }, 10), {
+      passive: true,
+    });
 
-      this.listeners.on(document.body, 'mouseleave', () => {
-        this.processMouseLeave();
-      });
+    this.listeners.on(document.body, 'mouseleave', () => {
+      this.processMouseLeave();
+    });
 
-      this.listeners.on(window, 'scroll', _.throttle((mouseEvent: MouseEvent) => {
-        this.processScroll(mouseEvent);
-      // eslint-disable-next-line @typescript-eslint/no-magic-numbers
-      }, 10), {
-        passive: true,
-      });
+    this.listeners.on(window, 'scroll', _.throttle((mouseEvent: MouseEvent) => {
+      this.processScroll(mouseEvent);
+    // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+    }, 10), {
+      passive: true,
+    });
 
-      this.listeners.on(document.body, 'mouseup', () => {
-        this.processMouseUp();
-      }, false);
-    }
+    this.listeners.on(document.body, 'mouseup', () => {
+      this.processMouseUp();
+    }, false);
   }
 
   /**
@@ -323,18 +319,16 @@ export default class RectangleSelection extends Module {
    * @param {number} speed - speed of scrolling
    */
   private scrollVertical(speed): void {
-    if (typeof window !== 'undefined') {
-      if (!(this.inScrollZone && this.mousedown)) {
-        return;
-      }
-      const lastOffset = window.pageYOffset;
-
-      window.scrollBy(0, speed);
-      this.mouseY += window.pageYOffset - lastOffset;
-      setTimeout(() => {
-        this.scrollVertical(speed);
-      }, 0);
+    if (!(this.inScrollZone && this.mousedown)) {
+      return;
     }
+    const lastOffset = window.pageYOffset;
+
+    window.scrollBy(0, speed);
+    this.mouseY += window.pageYOffset - lastOffset;
+    setTimeout(() => {
+      this.scrollVertical(speed);
+    }, 0);
   }
 
   /**
@@ -389,12 +383,10 @@ export default class RectangleSelection extends Module {
    * Shrink rect to singular point
    */
   private shrinkRectangleToPoint(): void {
-    if (typeof window !== 'undefined') {
-      this.overlayRectangle.style.left = `${this.startX - window.pageXOffset}px`;
-      this.overlayRectangle.style.top = `${this.startY - window.pageYOffset}px`;
-      this.overlayRectangle.style.bottom = `calc(100% - ${this.startY - window.pageYOffset}px`;
-      this.overlayRectangle.style.right = `calc(100% - ${this.startX - window.pageXOffset}px`;
-    }
+    this.overlayRectangle.style.left = `${this.startX - window.pageXOffset}px`;
+    this.overlayRectangle.style.top = `${this.startY - window.pageYOffset}px`;
+    this.overlayRectangle.style.bottom = `calc(100% - ${this.startY - window.pageYOffset}px`;
+    this.overlayRectangle.style.right = `calc(100% - ${this.startX - window.pageXOffset}px`;
   }
 
   /**
@@ -423,22 +415,20 @@ export default class RectangleSelection extends Module {
   private updateRectangleSize(): void {
     // Depending on the position of the mouse relative to the starting point,
     // change this.e distance from the desired edge of the screen*/
-    if (typeof window !== 'undefined') {
-      if (this.mouseY >= this.startY) {
-        this.overlayRectangle.style.top = `${this.startY - window.pageYOffset}px`;
-        this.overlayRectangle.style.bottom = `calc(100% - ${this.mouseY - window.pageYOffset}px`;
-      } else {
-        this.overlayRectangle.style.bottom = `calc(100% - ${this.startY - window.pageYOffset}px`;
-        this.overlayRectangle.style.top = `${this.mouseY - window.pageYOffset}px`;
-      }
+    if (this.mouseY >= this.startY) {
+      this.overlayRectangle.style.top = `${this.startY - window.pageYOffset}px`;
+      this.overlayRectangle.style.bottom = `calc(100% - ${this.mouseY - window.pageYOffset}px`;
+    } else {
+      this.overlayRectangle.style.bottom = `calc(100% - ${this.startY - window.pageYOffset}px`;
+      this.overlayRectangle.style.top = `${this.mouseY - window.pageYOffset}px`;
+    }
 
-      if (this.mouseX >= this.startX) {
-        this.overlayRectangle.style.left = `${this.startX - window.pageXOffset}px`;
-        this.overlayRectangle.style.right = `calc(100% - ${this.mouseX - window.pageXOffset}px`;
-      } else {
-        this.overlayRectangle.style.right = `calc(100% - ${this.startX - window.pageXOffset}px`;
-        this.overlayRectangle.style.left = `${this.mouseX - window.pageXOffset}px`;
-      }
+    if (this.mouseX >= this.startX) {
+      this.overlayRectangle.style.left = `${this.startX - window.pageXOffset}px`;
+      this.overlayRectangle.style.right = `calc(100% - ${this.mouseX - window.pageXOffset}px`;
+    } else {
+      this.overlayRectangle.style.right = `calc(100% - ${this.startX - window.pageXOffset}px`;
+      this.overlayRectangle.style.left = `${this.mouseX - window.pageXOffset}px`;
     }
   }
 
@@ -448,28 +438,26 @@ export default class RectangleSelection extends Module {
    * @returns {object} index - index next Block, leftPos - start of left border of Block, rightPos - right border
    */
   private genInfoForMouseSelection(): {index: number; leftPos: number; rightPos: number} {
-    if (typeof window !== 'undefined') {
-      const widthOfRedactor = document.body.offsetWidth;
-      const centerOfRedactor = widthOfRedactor / 2;
-      const Y = this.mouseY - window.pageYOffset;
-      const elementUnderMouse = document.elementFromPoint(centerOfRedactor, Y);
-      const blockInCurrentPos = this.Editor.BlockManager.getBlockByChildNode(elementUnderMouse);
-      let index;
+    const widthOfRedactor = document.body.offsetWidth;
+    const centerOfRedactor = widthOfRedactor / 2;
+    const Y = this.mouseY - window.pageYOffset;
+    const elementUnderMouse = document.elementFromPoint(centerOfRedactor, Y);
+    const blockInCurrentPos = this.Editor.BlockManager.getBlockByChildNode(elementUnderMouse);
+    let index;
 
-      if (blockInCurrentPos !== undefined) {
-        index = this.Editor.BlockManager.blocks.findIndex((block) => block.holder === blockInCurrentPos.holder);
-      }
-      const contentElement = this.Editor.BlockManager.lastBlock.holder.querySelector('.' + Block.CSS.content);
-      const centerOfBlock = Number.parseInt(window.getComputedStyle(contentElement).width, 10) / 2;
-      const leftPos = centerOfRedactor - centerOfBlock;
-      const rightPos = centerOfRedactor + centerOfBlock;
-
-      return {
-        index,
-        leftPos,
-        rightPos,
-      };
+    if (blockInCurrentPos !== undefined) {
+      index = this.Editor.BlockManager.blocks.findIndex((block) => block.holder === blockInCurrentPos.holder);
     }
+    const contentElement = this.Editor.BlockManager.lastBlock.holder.querySelector('.' + Block.CSS.content);
+    const centerOfBlock = Number.parseInt(window.getComputedStyle(contentElement).width, 10) / 2;
+    const leftPos = centerOfRedactor - centerOfBlock;
+    const rightPos = centerOfRedactor + centerOfBlock;
+
+    return {
+      index,
+      leftPos,
+      rightPos,
+    };
   }
 
   /**

@@ -225,63 +225,61 @@ export default class Toolbar extends Module<ToolbarNodes> {
    * @param block - block to move Toolbar near it
    */
   public moveAndOpen(block: Block = this.Editor.BlockManager.currentBlock): void {
-    if (typeof window !== 'undefined') {
-      /**
-       * Close Toolbox when we move toolbar
-       */
-      if (this.toolboxInstance.opened) {
-        this.toolboxInstance.close();
-      }
-
-      if (this.Editor.BlockSettings.opened) {
-        this.Editor.BlockSettings.close();
-      }
-
-      /**
-       * If no one Block selected as a Current
-       */
-      if (!block) {
-        return;
-      }
-
-      this.hoveredBlock = block;
-
-      const targetBlockHolder = block.holder;
-      const { isMobile } = this.Editor.UI;
-      const renderedContent = block.pluginsContent;
-      const renderedContentStyle = window.getComputedStyle(renderedContent);
-      const blockRenderedElementPaddingTop = parseInt(renderedContentStyle.paddingTop, 10);
-      const blockHeight = targetBlockHolder.offsetHeight;
-
-      let toolbarY;
-
-      /**
-       * On mobile — Toolbar at the bottom of Block
-       * On Desktop — Toolbar should be moved to the first line of block text
-       *              To do that, we compute the block offset and the padding-top of the plugin content
-       */
-      if (isMobile) {
-        toolbarY = targetBlockHolder.offsetTop + blockHeight;
-      } else {
-        toolbarY = targetBlockHolder.offsetTop + blockRenderedElementPaddingTop;
-      }
-
-      /**
-       * Move Toolbar to the Top coordinate of Block
-       */
-      this.nodes.wrapper.style.top = `${Math.floor(toolbarY)}px`;
-
-      /**
-       * Do not show Block Tunes Toggler near single and empty block
-       */
-      if (this.Editor.BlockManager.blocks.length === 1 && block.isEmpty) {
-        this.blockTunesToggler.hide();
-      } else {
-        this.blockTunesToggler.show();
-      }
-
-      this.open();
+    /**
+     * Close Toolbox when we move toolbar
+     */
+    if (this.toolboxInstance.opened) {
+      this.toolboxInstance.close();
     }
+
+    if (this.Editor.BlockSettings.opened) {
+      this.Editor.BlockSettings.close();
+    }
+
+    /**
+     * If no one Block selected as a Current
+     */
+    if (!block) {
+      return;
+    }
+
+    this.hoveredBlock = block;
+
+    const targetBlockHolder = block.holder;
+    const { isMobile } = this.Editor.UI;
+    const renderedContent = block.pluginsContent;
+    const renderedContentStyle = window.getComputedStyle(renderedContent);
+    const blockRenderedElementPaddingTop = parseInt(renderedContentStyle.paddingTop, 10);
+    const blockHeight = targetBlockHolder.offsetHeight;
+
+    let toolbarY;
+
+    /**
+     * On mobile — Toolbar at the bottom of Block
+     * On Desktop — Toolbar should be moved to the first line of block text
+     *              To do that, we compute the block offset and the padding-top of the plugin content
+     */
+    if (isMobile) {
+      toolbarY = targetBlockHolder.offsetTop + blockHeight;
+    } else {
+      toolbarY = targetBlockHolder.offsetTop + blockRenderedElementPaddingTop;
+    }
+
+    /**
+     * Move Toolbar to the Top coordinate of Block
+     */
+    this.nodes.wrapper.style.top = `${Math.floor(toolbarY)}px`;
+
+    /**
+     * Do not show Block Tunes Toggler near single and empty block
+     */
+    if (this.Editor.BlockManager.blocks.length === 1 && block.isEmpty) {
+      this.blockTunesToggler.hide();
+    } else {
+      this.blockTunesToggler.show();
+    }
+
+    this.open();
   }
 
   /**

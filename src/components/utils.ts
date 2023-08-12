@@ -86,7 +86,7 @@ function _log(
   args?: any,
   style = 'color: inherit'
 ): void {
-  if (typeof window === 'undefined' || !('console' in window) || !window.console[type]) {
+  if (!('console' in window) || !window.console[type]) {
     return;
   }
 
@@ -166,12 +166,12 @@ export function setLogLevel(logLevel: LogLevels): void {
 /**
  * _log method proxy without Editor.js label
  */
-export const log = (typeof window !== 'undefined') ? _log.bind(window, false) : null;
+export const log = _log.bind(window, false);
 
 /**
  * _log method proxy with Editor.js label
  */
-export const logLabeled = (typeof window !== 'undefined') ? _log.bind(window, true) : null;
+export const logLabeled = _log.bind(window, true);
 
 /**
  * Return string representation of the object type
@@ -378,9 +378,8 @@ export function delay(method: (...args: any[]) => any, timeout: number) {
     const context = this,
         // eslint-disable-next-line prefer-rest-params
         args = arguments;
-        if (typeof window !== 'undefined') {
-          window.setTimeout(() => method.apply(context, args), timeout);
-        }
+
+    window.setTimeout(() => method.apply(context, args), timeout);
   };
 }
 
@@ -432,14 +431,12 @@ export function debounce(func: (...args: unknown[]) => void, wait?: number, imme
 
     const callNow = immediate && !timeout;
 
-    if (typeof window !== 'undefined') {
-      window.clearTimeout(timeout);
-      timeout = window.setTimeout(later, wait);
-      if (callNow) {
-        func.apply(context, args);
-      }
+    window.clearTimeout(timeout);
+    timeout = window.setTimeout(later, wait);
+    if (callNow) {
+      func.apply(context, args);
     }
-  }
+  };
 }
 
 /**
@@ -511,24 +508,22 @@ export function throttle(func, wait, options: {leading?: boolean; trailing?: boo
  * @param text - text to copy
  */
 export function copyTextToClipboard(text): void {
-  if (typeof window !== 'undefined') {
-    const el = Dom.make('div', 'codex-editor-clipboard', {
-      innerHTML: text,
-    });
+  const el = Dom.make('div', 'codex-editor-clipboard', {
+    innerHTML: text,
+  });
 
-    document.body.appendChild(el);
+  document.body.appendChild(el);
 
-    const selection = window.getSelection();
-    const range = document.createRange();
+  const selection = window.getSelection();
+  const range = document.createRange();
 
-    range.selectNode(el);
+  range.selectNode(el);
 
-    window.getSelection().removeAllRanges();
-    selection.addRange(range);
+  window.getSelection().removeAllRanges();
+  selection.addRange(range);
 
-    document.execCommand('copy');
-    document.body.removeChild(el);
-  }
+  document.execCommand('copy');
+  document.body.removeChild(el);
 }
 
 /**
@@ -542,14 +537,12 @@ export function getUserOS(): {[key: string]: boolean} {
     linux: false,
   };
 
-  if (typeof window !== 'undefined') {
-    const userOS = Object.keys(OS).find((os: string) => window.navigator.appVersion.toLowerCase().indexOf(os) !== -1);
+  const userOS = Object.keys(OS).find((os: string) => window.navigator.appVersion.toLowerCase().indexOf(os) !== -1);
 
-    if (userOS) {
-      OS[userOS] = true;
+  if (userOS) {
+    OS[userOS] = true;
 
-      return OS;
-    }
+    return OS;
   }
 
   return OS;
@@ -652,9 +645,9 @@ export function getValidUrl(url: string): string {
     // do nothing but handle below
   }
 
-  if (typeof window !== 'undefined' && url.substring(0, 2) === '//') {
+  if (url.substring(0, 2) === '//') {
     return window.location.protocol + url;
-  } else if (typeof window !== 'undefined') {
+  } else {
     return window.location.origin + url;
   }
 }
@@ -676,9 +669,7 @@ export function generateBlockId(): string {
  * @param {string} url - URL address to redirect
  */
 export function openTab(url: string): void {
-  if (typeof window !== 'undefined') {
-    window.open(url, '_blank');
-  }
+  window.open(url, '_blank');
 }
 
 /**
@@ -766,9 +757,7 @@ export const mobileScreenBreakpoint = 650;
  * True if screen has mobile size
  */
 export function isMobileScreen(): boolean {
-  if (typeof window !== 'undefined') {
-    return window.matchMedia(`(max-width: ${mobileScreenBreakpoint}px)`).matches;
-  }
+  return window.matchMedia(`(max-width: ${mobileScreenBreakpoint}px)`).matches;
 }
 
 /**

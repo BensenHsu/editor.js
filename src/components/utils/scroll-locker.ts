@@ -43,26 +43,22 @@ export default class ScrollLocker {
    * Locks scroll in a hard way (via setting fixed position to body element)
    */
   private lockHard(): void {
-    if (typeof window !== 'undefined') {
-      this.scrollPosition = window.pageYOffset;
-      document.documentElement.style.setProperty(
-        '--window-scroll-offset',
-        `${this.scrollPosition}px`
-      );
-      document.body.classList.add(ScrollLocker.CSS.scrollLockedHard);
-    }
+    this.scrollPosition = window.pageYOffset;
+    document.documentElement.style.setProperty(
+      '--window-scroll-offset',
+      `${this.scrollPosition}px`
+    );
+    document.body.classList.add(ScrollLocker.CSS.scrollLockedHard);
   }
 
   /**
    * Unlocks hard scroll lock
    */
   private unlockHard(): void {
-    if (typeof window !== 'undefined') {
-        document.body.classList.remove(ScrollLocker.CSS.scrollLockedHard);
-        if (this.scrollPosition !== null) {
-          window.scrollTo(0, this.scrollPosition);
-        }
-        this.scrollPosition = null;
-      }
+    document.body.classList.remove(ScrollLocker.CSS.scrollLockedHard);
+    if (this.scrollPosition !== null) {
+      window.scrollTo(0, this.scrollPosition);
+    }
+    this.scrollPosition = null;
   }
 }
