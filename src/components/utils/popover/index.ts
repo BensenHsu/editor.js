@@ -452,16 +452,14 @@ export default class Popover extends EventsDispatcher<PopoverEvent> {
    * It should happen when there is enough space below or not enough space above
    */
   private get shouldOpenBottom(): boolean {
-    if (typeof window !== 'undefined') {
-      const popoverRect = this.nodes.popover.getBoundingClientRect();
-      const scopeElementRect = this.scopeElement.getBoundingClientRect();
-      const popoverHeight = this.height;
-      const popoverPotentialBottomEdge = popoverRect.top + popoverHeight;
-      const popoverPotentialTopEdge = popoverRect.top - popoverHeight;
-      const bottomEdgeForComparison = Math.min(window.innerHeight, scopeElementRect.bottom);
+    const popoverRect = this.nodes.popover.getBoundingClientRect();
+    const scopeElementRect = this.scopeElement.getBoundingClientRect();
+    const popoverHeight = this.height;
+    const popoverPotentialBottomEdge = popoverRect.top + popoverHeight;
+    const popoverPotentialTopEdge = popoverRect.top - popoverHeight;
+    const bottomEdgeForComparison = Math.min(window.innerHeight, scopeElementRect.bottom);
 
-      return popoverPotentialTopEdge < scopeElementRect.top || popoverPotentialBottomEdge <= bottomEdgeForComparison;
-    }
+    return popoverPotentialTopEdge < scopeElementRect.top || popoverPotentialBottomEdge <= bottomEdgeForComparison;
   }
 
   /**

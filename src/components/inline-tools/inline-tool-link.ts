@@ -118,17 +118,15 @@ export default class LinkInlineTool implements InlineTool {
   }
   
   handleLinkClick(event: MouseEvent) {
-    if (typeof window !== 'undefined') {
-      const target = event.target as HTMLElement;
-      
-      if (target.tagName === 'A') {
-        event.preventDefault();
-        const targetAttr = target.getAttribute('target');
-        if (targetAttr === '_blank') {
-          window.open(target.getAttribute('href'), '_blank');
-        } else {
-          window.location.href = target.getAttribute('href');
-        }
+    const target = event.target as HTMLElement;
+    
+    if (target.tagName === 'A') {
+      event.preventDefault();
+      const targetAttr = target.getAttribute('target');
+      if (targetAttr === '_blank') {
+        window.open(target.getAttribute('href'), '_blank');
+      } else {
+        window.location.href = target.getAttribute('href');
       }
     }
   }
@@ -406,20 +404,19 @@ export default class LinkInlineTool implements InlineTool {
     /**
      * Edit all link, not selected part
      */
-    if (typeof window !== 'undefined') {
-      const anchorTag = this.selection.findParentTag('A');
+    const anchorTag = this.selection.findParentTag('A');
 
-      if (anchorTag) {
-        this.selection.expandToTag(anchorTag);
-      }
-
-      const range = window.getSelection()?.getRangeAt(0);
-      const linkA = document.createElement('a');
-      linkA.href = link;
-      linkA.classList.add('ce-link');
-      linkA.appendChild(range?.extractContents());
-      range?.insertNode(linkA);
+    if (anchorTag) {
+      this.selection.expandToTag(anchorTag);
     }
+
+    const range = window.getSelection()?.getRangeAt(0);
+    const linkA = document.createElement('a');
+    linkA.href = link;
+    linkA.classList.add('ce-link');
+    linkA.appendChild(range?.extractContents());
+    range?.insertNode(linkA);
+
   }
 
   /**

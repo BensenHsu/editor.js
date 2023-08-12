@@ -109,7 +109,7 @@ interface Element {
  * @see {@link https://gist.github.com/KilianSSL/774297b76378566588f02538631c3137}
  * @param centerIfNeeded - true, if the element should be aligned so it is centered within the visible area of the scrollable ancestor.
  */
-if (typeof window !== 'undefined' && !Element.prototype.scrollIntoViewIfNeeded) {
+if (!Element.prototype.scrollIntoViewIfNeeded) {
   Element.prototype.scrollIntoViewIfNeeded = function (centerIfNeeded): void {
     centerIfNeeded = arguments.length === 0 ? true : !!centerIfNeeded;
 

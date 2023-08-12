@@ -582,8 +582,8 @@ export default class Dom {
    */
   public static offset(el): { top: number; left: number; right: number; bottom: number } {
     const rect = el.getBoundingClientRect();
-    const scrollLeft = document.documentElement.scrollLeft;
-    const scrollTop = document.documentElement.scrollTop;
+    const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
     const top = rect.top + scrollTop;
     const left = rect.left + scrollLeft;
