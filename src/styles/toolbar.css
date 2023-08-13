@@ -32,6 +32,10 @@
       @apply --overlay-pane;
       position: static;
     }
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
   /**
