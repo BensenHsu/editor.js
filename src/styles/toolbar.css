@@ -17,16 +17,15 @@
     margin: 0 auto;
     position: relative;
     display: flex;
-    flex-direction: column;
+    flex-direction: column; /* Stack icons vertically */
     align-items: center;
   }
 
   &__plus {
-
-    margin-top: 10px;
-    
     @apply --toolbox-button;
+
     flex-shrink: 0;
+    order: 2;
 
     &-shortcut {
       opacity: 0.6;
@@ -66,6 +65,8 @@
     margin-left: 3px;
     cursor: pointer;
     user-select: none;
+    order: 1; /* Set order for settings button */
+    margin-bottom: 5px;
 
     @media (--not-mobile){
       width: 24px;
