@@ -61,10 +61,6 @@
     cursor: pointer;
     user-select: none;
 
-    @media (--not-mobile){
-      width: 16px;
-    }
-
     &--hidden {
       display: none;
     }
@@ -72,14 +68,6 @@
     @media (--mobile){
       @apply --overlay-pane;
       position: static;
-    }
-  }
-
-  &__plus,
-  &__settings-btn {
-    svg {
-      width: 16px;
-      height: 16px;
     }
   }
 }
