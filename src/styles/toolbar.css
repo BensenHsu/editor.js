@@ -62,7 +62,7 @@
     user-select: none;
 
     @media (--not-mobile){
-      width: 12px;
+      width: 16px;
     }
 
     &--hidden {
@@ -78,8 +78,8 @@
   &__plus,
   &__settings-btn {
     svg {
-      width: 12px;
-      height: 12px;
+      width: 16px;
+      height: 16px;
     }
   }
 }
