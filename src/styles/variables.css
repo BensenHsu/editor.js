@@ -116,10 +116,6 @@
   --toolbox-button: {
     color: var(--color-dark);
     cursor: pointer;
-    padding-left: 1px;
-    padding-right: 1px;
-    padding-top: 1px;
-    padding-bottom: 1px;
     border-radius: 5px;
     display: inline-flex;
     justify-content: center;
