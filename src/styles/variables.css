@@ -52,14 +52,14 @@
   /**
    * Toolbar Plus Button and Toolbox buttons height and width
    */
-  --toolbox-buttons-size: 22px;
-  --toolbox-buttons-size--mobile: 22px;
+  --toolbox-buttons-size: 26px;
+  --toolbox-buttons-size--mobile: 36px;
 
   /**
    * Size of svg icons got from the CodeX Icons pack
    */
-  --icon-size: 16px;
-  --icon-size--mobile: 16px;
+  --icon-size: 20px;
+  --icon-size--mobile: 28px;
 
 
   /**
@@ -116,7 +116,9 @@
   --toolbox-button: {
     color: var(--color-dark);
     cursor: pointer;
-    border-radius: 5px;
+    width: var(--toolbox-buttons-size);
+    height: var(--toolbox-buttons-size);
+    border-radius: 7px;
     display: inline-flex;
     justify-content: center;
     align-items: center;
